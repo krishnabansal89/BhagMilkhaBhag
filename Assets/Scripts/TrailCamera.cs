@@ -4,19 +4,17 @@ using UnityEngine;
 
 public class TrailCamera : MonoBehaviour
 {
-    public Transform target;
-    public float trailDistance = 5.0f;
-    public float heightOffset = 3.0f;
-    public float cameraDelay = 0.02f;
+    public Transform rb;
+    public Transform cam;
+    // public Vector3 pos;
+    public Vector3 offset;
+    public float damping;
+    private Vector3 velocity = Vector3.zero;
 
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
-        Vector3 followPos = target.position - target.forward * trailDistance;
-
-        followPos.y += heightOffset;
-        transform.position += (followPos - transform.position) * cameraDelay;
-
-        transform.LookAt(target.transform);
+        Vector3 movePos = rb.position + offset;
+      //  transform.Rotate(rb.transform.rotation);
+        transform.position = Vector3.SmoothDamp(transform.position, movePos, ref velocity, damping);
     }
 }
